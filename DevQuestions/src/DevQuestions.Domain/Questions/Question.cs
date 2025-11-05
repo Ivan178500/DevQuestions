@@ -9,7 +9,7 @@ public class Question
     public required string Title { get; set; }
 
     public required string Text { get; set; }
-    
+
     public required Guid UserId { get; set; }
 
     public Guid? ScreenshotId { get; set; }

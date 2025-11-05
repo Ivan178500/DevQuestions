@@ -11,9 +11,9 @@ public class Report
     public required string Reason { get; set; }
 
     public Status Status { get; set; } = Status.Open;
-    
+
     public DateTime CreatedAt { get; set; }
-    
+
     public DateTime? UpdateAt { get; set; }
 
     public Guid? ResolvedByUserId { get; set; }
