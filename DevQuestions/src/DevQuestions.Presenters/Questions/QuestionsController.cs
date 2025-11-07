@@ -1,26 +1,35 @@
-using DevQuestion.Contracts;
+using DevQuestion.Contracts.Questions;
+using DevQuestions.Application.Questions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevQuestions.Presenters;
+namespace DevQuestions.Presenters.Questions;
 
 [ApiController]
 [Route("[controller]")]
 public class QuestionsController : ControllerBase
 {
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateQuestionDto request, CancellationToken question)
+    private readonly IQuestionsService _questionService;
+
+    public QuestionsController(IQuestionsService questionService)
     {
-        return Ok("Questions created");
+        _questionService = questionService;
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateQuestionDto request, CancellationToken cancellationToken)
+    {
+        var questionId = await _questionService.Create(request, cancellationToken);
+        return Ok(questionId);
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] GetQuestionsDto request, CancellationToken question)
+    public async Task<IActionResult> Get([FromQuery] GetQuestionsDto request, CancellationToken cancellationToken)
     {
         return Ok("Questions retrieved");
     }
 
     [HttpGet("{questionId:guid}")]
-    public async Task<IActionResult> GetById([FromRoute] Guid questionId, CancellationToken question)
+    public async Task<IActionResult> GetById([FromRoute] Guid questionId, CancellationToken cancellationToken)
     {
         return Ok("Question get");
     }
@@ -35,7 +44,7 @@ public class QuestionsController : ControllerBase
     }
 
     [HttpDelete("{questionId:guid}")]
-    public async Task<IActionResult> Delete([FromRoute] Guid questionId, CancellationToken question)
+    public async Task<IActionResult> Delete([FromRoute] Guid questionId, CancellationToken cancellationToken)
     {
         return Ok("Question deleted");
     }
@@ -44,7 +53,7 @@ public class QuestionsController : ControllerBase
     public async Task<IActionResult> SelectSolution(
         [FromRoute] Guid questionId,
         [FromQuery] Guid answerId,
-        CancellationToken question)
+        CancellationToken cancellationToken)
     {
         return Ok("Solution selected");
     }
@@ -53,7 +62,7 @@ public class QuestionsController : ControllerBase
     public async Task<IActionResult> AddAnswer(
         [FromRoute] Guid questionId,
         [FromBody] AddAnswerDto request,
-        CancellationToken question)
+        CancellationToken cancellationToken)
     {
         return Ok("Answer added");
     }
